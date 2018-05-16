@@ -7,46 +7,40 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          id: 1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: 2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
-      ]
-    }
+      messages: []
+    };
   }
 
-//   componentDidMount() {
-//   console.log("componentDidMount <App />");
-//   setTimeout(() => {
-//     console.log("Simulating incoming message");
-//     // Add a new message to the list of messages in the data store
-//     const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-//     const messages = this.state.messages.concat(newMessage)
-//     // Update the state of the app component.
-//     // Calling setState will trigger a call to render() in App and all child components.
-//     this.setState({messages: messages})
-//   }, 3000);
-// }
+componentDidMount() {
+  this.socket = new WebSocket('ws://localhost:3001');
+
+  this.socket.onopen = event => {
+
+  }
+  this.socket.onmessage = event => {
+    console.log(event.data);
+
+    const recievedMsg = JSON.parse(event.data);
+
+    const newMsg = this.state.messages.concat(recievedMsg)
+    this.setState({ messages: newMsg })
+  }
+}
+
 
 addMessage = message => {
   const newMessage = {
-    id: this.state.messages.id + 1,
     username: this.state.currentUser.name,
     content: message
   };
-  const messages = this.state.messages.concat(newMessage)
-  this.setState({messages: messages})
+
+  this.socket.send(JSON.stringify(newMessage));
+
+  // const messages = this.state.messages.concat(newMessage)
+  // this.setState({messages: messages})
 }
 
   render() {
-    console.log("render");
     return (
       <div>
         <MessageList messages={this.state.messages} />
@@ -55,5 +49,6 @@ addMessage = message => {
     );
   }
 }
+
 
 export default App;
