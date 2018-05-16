@@ -18,7 +18,6 @@ componentDidMount() {
 
   }
   this.socket.onmessage = event => {
-    console.log(event.data);
 
     const recievedMsg = JSON.parse(event.data);
 
@@ -26,6 +25,12 @@ componentDidMount() {
     this.setState({ messages: newMsg })
   }
 }
+
+changeUser = name => {
+  this.setState({
+    currentUser: {name: name}
+  })
+};
 
 
 addMessage = message => {
@@ -44,7 +49,7 @@ addMessage = message => {
     return (
       <div>
         <MessageList messages={this.state.messages} />
-        <ChatBar currentUser={this.state.currentUser} addMessage={this.addMessage} />
+        <ChatBar changeUser={this.changeUser} addMessage={this.addMessage} />
       </div>
     );
   }

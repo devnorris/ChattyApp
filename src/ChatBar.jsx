@@ -9,12 +9,19 @@ captureText = event => {
   }
 }
 
+captureName = event => {
+  if( event.key === "Enter" ) {
+  this.props.changeUser(event.target.value);
+  }
+}
+
   render() {
     return (
       <footer className="chatbar">
         <input
             className="chatbar-username"
-            defaultValue={this.props.currentUser.name}
+            defaultValue={this.props.changeUser.name}
+            onKeyPress={this.captureName}
         />
         <input
             className="chatbar-message"

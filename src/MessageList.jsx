@@ -3,7 +3,7 @@ import Message from "./Message.jsx";
 
 class MessageList extends React.Component {
   render() {
-    const messageComponent= this.props.recieve.map((message, index) => {
+    const messageComponent= this.props.messages.map((message, index) => {
       return (
         <Message username={message.username} content={message.content} key={message.id} />
       );
