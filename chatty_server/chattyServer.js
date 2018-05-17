@@ -11,9 +11,22 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
+findColor = () => {
+  const colors = ["#0000ff", "#52a002", "#883fe2", "#ff9928"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+
+  const colorCode = {
+    type: "userColor",
+    color: findColor()
+  }
+
+  ws.send(JSON.stringify(colorCode));
+
 
     const connClients = wss.clients.size;
 

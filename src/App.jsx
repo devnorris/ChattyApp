@@ -8,11 +8,15 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [],
-      usersOnline: 1
+      usersOnline: 1,
+      color: "black"
     };
   }
 
 componentDidMount() {
+
+
+
   this.socket = new WebSocket('ws://localhost:3001');
 
   this.socket.onopen = event => {
@@ -22,13 +26,24 @@ componentDidMount() {
   this.socket.onmessage = event => {
     console.log("event: ", event);
 
+
     const recievedData = JSON.parse(event.data);
 
-   if (recievedData.type === "numberUsers") {
-    this.setState({ usersOnline: recievedData.amount })
-   } else if (recievedData.type === "disconnected"){
-    this.setState({ usersOnline: recievedData.amount })
-   }
+
+    switch (recievedData.type) {
+      case "numberUsers":
+        this.setState({ usersOnline: recievedData.amount });
+        break;
+      case "disconnected":
+        this.setState({ usersOnline: recievedData.amount });
+        break;
+      case "userColor":
+        this.setState({ color: recievedData.color });
+        break;
+      default:
+        console.log("This type is unkown.")
+    }
+
 
     const newMsg = this.state.messages.concat(recievedData)
         this.setState({ messages: newMsg })
@@ -57,6 +72,7 @@ addMessage = message => {
   const newMessage = {
     type: "postMessage",
     username: this.state.currentUser.name,
+    color: this.state.color,
     content: message
   };
 
@@ -75,7 +91,7 @@ addMessage = message => {
         <div>{this.state.usersOnline} users online</div>
       </nav>
 
-        <MessageList messages={this.state.messages} />
+        <MessageList messages={ this.state.messages } />
         <ChatBar changeUser={this.changeUser} addMessage={this.addMessage} />
 
       </div>

@@ -8,7 +8,7 @@ class MessageList extends React.Component {
           return (<div key={message.id}>{message.content}</div>);
         } else if (message.type === "incomingMessage") {
             return (
-              <Message username={message.username} content={message.content} key={message.id} />
+              <Message username={ message.username } content={ message.content } color={ message.color } key={ message.id } />
             );
         } else {
           console.log('TYPE:' , message.type, message.content);
