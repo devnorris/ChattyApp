@@ -15,28 +15,51 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+    const connClients = wss.clients.size;
 
+    const numUsers = {
+      type: "numberUsers",
+      amount: connClients
+    }
+
+  wss.clients.forEach( client => {
+    client.send(JSON.stringify(numUsers));
+  });
 
   ws.on('message', (msg) => {
     console.log("recieved : ", (msg));
 
-  const dataParsed = JSON.parse(msg);
+    const dataParsed = JSON.parse(msg);
 
-    if (dataParsed.type === "postNotification") {
-      dataParsed.type = "incomingNotification";
-    } else if (dataParsed.type === "postMessage") {
-      dataParsed.type = "incomingMessage";
-    }
+      if (dataParsed.type === "postNotification") {
+        dataParsed.type = "incomingNotification";
+      } else if (dataParsed.type === "postMessage") {
+        dataParsed.type = "incomingMessage";
+      };
 
-  // //sent postNOotication and postMessage to server and am splitting them up to change into incomingMessage and incomingNotification to send to client.
-  // //Next thing to do is change the state in the client when recieving this data(incomingMessage, incomingNotification)
     dataParsed.id = uuidv4();
 
     wss.clients.forEach(client => {
-      client.send(JSON.stringify(dataParsed));
+        client.send(JSON.stringify(dataParsed));
     });
+
   });
 
 
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+
+    const loggedOff = wss.clients.size;
+
+    const disconnectUser = {
+      type: "disconnected",
+      amount: loggedOff
+    };
+
+    wss.clients.forEach( client => {
+      client.send(JSON.stringify(disconnectUser))
+    });
+
+  });
+
 });
