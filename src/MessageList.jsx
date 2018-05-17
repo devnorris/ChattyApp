@@ -1,12 +1,19 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Message from "./Message.jsx";
 
 class MessageList extends React.Component {
   render() {
-    const messageComponent= this.props.messages.map((message, index) => {
-      return (
-        <Message username={message.username} content={message.content} key={message.id} />
-      );
+    const messageComponent = this.props.messages.map((message, index) => {
+      console.log("message:", message)
+        if (message.type === "incomingNotification") {
+          return (<div key={message.id}>{message.content}</div>);
+        } else if (message.type === "incomingMessage") {
+            return (
+              <Message username={message.username} content={message.content} key={message.id} />
+            );
+        } else {
+          console.log('TYPE:' , message.type, message.content);
+        }
     });
 
     return (

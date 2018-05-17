@@ -8,6 +8,7 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: []
+      // notifications: ""
     };
   }
 
@@ -15,26 +16,48 @@ componentDidMount() {
   this.socket = new WebSocket('ws://localhost:3001');
 
   this.socket.onopen = event => {
-
+    console.log("Connected to server");
   }
   this.socket.onmessage = event => {
+    console.log("event: ", event);
 
-    const recievedMsg = JSON.parse(event.data);
+    const recievedData = JSON.parse(event.data);
+    console.log("type: ", recievedData.type)
+    // if (recievedData.type === "incomingMessage") {
+    //    const newMsg = this.state.messages.concat(recievedData);
+    //     this.setState({ messages: newMsg });
+    // } else if (recievedData.type === "incomingNotification") {
+    //     const newNotifaction = this.state.currentUser.name(recievedData.username);
+    //     this.setState({ currentUser: newNotifaction });
+    // } else {
+    //     throw new Error("Unknown event type " + recievedData.type);
+    // }
 
-    const newMsg = this.state.messages.concat(recievedMsg)
-    this.setState({ messages: newMsg })
-  }
-}
+      const newMsg = this.state.messages.concat(recievedData)
+        this.setState({ messages: newMsg })
+
+  };
+};
+
 
 changeUser = name => {
+
+  const newNotifaction = {
+    type: "postNotification",
+    content: `${this.state.currentUser.name} changed thier name to ${name}.`
+  };
+
   this.setState({
     currentUser: {name: name}
-  })
+  });
+
+  this.socket.send(JSON.stringify(newNotifaction));
 };
 
 
 addMessage = message => {
   const newMessage = {
+    type: "postMessage",
     username: this.state.currentUser.name,
     content: message
   };
