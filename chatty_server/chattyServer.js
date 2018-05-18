@@ -11,10 +11,10 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
-findColor = () => {
-  const colors = ["#0000ff", "#52a002", "#883fe2", "#ff9928"];
-  return colors[Math.floor(Math.random() * colors.length)];
-}
+  findColor = () => {
+    const colors = ["#0000ff", "#52a002", "#883fe2", "#900700ed"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
 
 
 wss.on('connection', (ws) => {
@@ -23,24 +23,22 @@ wss.on('connection', (ws) => {
   const colorCode = {
     type: "userColor",
     color: findColor()
-  }
+  };
 
   ws.send(JSON.stringify(colorCode));
-
 
     const connClients = wss.clients.size;
 
     const numUsers = {
       type: "numberUsers",
       amount: connClients
-    }
+    };
 
   wss.clients.forEach( client => {
     client.send(JSON.stringify(numUsers));
   });
 
   ws.on('message', (msg) => {
-    console.log("recieved : ", (msg));
 
     const dataParsed = JSON.parse(msg);
 

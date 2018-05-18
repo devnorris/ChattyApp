@@ -88,11 +88,11 @@ addMessage = message => {
 
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
-        <div>{this.state.usersOnline} users online</div>
+        <div>{ this.state.usersOnline } users online</div>
       </nav>
 
         <MessageList messages={ this.state.messages } />
-        <ChatBar changeUser={this.changeUser} addMessage={this.addMessage} />
+        <ChatBar changeUser={ this.changeUser } addMessage={ this.addMessage } />
 
       </div>
     );
