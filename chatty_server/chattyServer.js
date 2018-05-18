@@ -12,7 +12,7 @@ const server = express()
 const wss = new SocketServer({ server });
 
   findColor = () => {
-    const colors = ["#0000ff", "#52a002", "#883fe2", "#900700ed"];
+    const colors = ["#0000ff", "#52a002", "#883fe2", "#900700ed", "#ffc107", "#07ffec", "#5f07ff"];
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
