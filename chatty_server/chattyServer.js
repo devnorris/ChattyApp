@@ -11,6 +11,7 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
+  // function that picks a color at random
   findColor = () => {
     const colors = ["#0000ff", "#52a002", "#883fe2", "#900700ed", "#ffc107", "#07ffec", "#5f07ff"];
     return colors[Math.floor(Math.random() * colors.length)];
@@ -20,7 +21,7 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
-  const colorCode = {
+  const colorCode = { // assigns a color to a connected user
     type: "userColor",
     color: findColor()
   };
@@ -42,6 +43,7 @@ wss.on('connection', (ws) => {
 
     const dataParsed = JSON.parse(msg);
 
+    // changes the data from post to incoming for the client
       if (dataParsed.type === "postNotification") {
         dataParsed.type = "incomingNotification";
       } else if (dataParsed.type === "postMessage") {
@@ -56,7 +58,8 @@ wss.on('connection', (ws) => {
 
   });
 
-
+// closes the connection when a user exits the app
+// also sends the diconnected notification to change "users Online"
   ws.on('close', () => {
     console.log('Client disconnected');
 

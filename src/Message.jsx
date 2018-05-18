@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 
 class Message extends React.Component {
   render() {
-    const regEx = new RegExp('https?:\/\/.*\.(?:png|jpg|gif)','g','i');
+
+    // creates a new message
+    const regEx = new RegExp('https?:\/\/.*\.(?:png|jpg|gif)','g','i'); //captures if text is url
     const image = this.props.content.match(regEx);
     let theContent = this.props.content;
 

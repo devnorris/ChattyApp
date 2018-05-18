@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 class ChatBar extends React.Component {
 
+
+// captures the text inputed in the message bar
 captureText = event => {
   if( event.key === "Enter" ) {
   this.props.addMessage(event.target.value);
@@ -9,6 +11,7 @@ captureText = event => {
   }
 }
 
+// captures the name inputed in the name bar
 captureName = event => {
   if( event.key === "Enter" ) {
   this.props.changeUser(event.target.value);

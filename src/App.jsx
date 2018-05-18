@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser: {name: "Anonymous"},
       messages: [],
       usersOnline: 1,
       color: "black"
@@ -16,7 +16,6 @@ class App extends Component {
 componentDidMount() {
 
 
-
   this.socket = new WebSocket('ws://localhost:3001');
 
   this.socket.onopen = event => {
@@ -24,12 +23,10 @@ componentDidMount() {
   }
 
   this.socket.onmessage = event => {
-    console.log("event: ", event);
-
 
     const recievedData = JSON.parse(event.data);
 
-
+    // sets the state with the data recieved
     switch (recievedData.type) {
       case "numberUsers":
         this.setState({ usersOnline: recievedData.amount });
@@ -51,9 +48,8 @@ componentDidMount() {
   };
 };
 
-
+// sends notification to server of name change and sets the state with the new name change
 changeUser = name => {
-
   const newNotifaction = {
     type: "postNotification",
     content: `${this.state.currentUser.name} changed thier name to ${name}.`
@@ -67,7 +63,7 @@ changeUser = name => {
 
 };
 
-
+// creates a new message and sends it to the server
 addMessage = message => {
   const newMessage = {
     type: "postMessage",
@@ -78,8 +74,6 @@ addMessage = message => {
 
   this.socket.send(JSON.stringify(newMessage));
 
-  // const messages = this.state.messages.concat(newMessage)
-  // this.setState({messages: messages})
 }
 
   render() {
