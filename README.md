@@ -5,7 +5,7 @@ This was created with React for front end work and uses WebSockets for the serve
 
 ## Screenshots
 
-
+!["GIF of Process"](https://github.com/devnorris/ChattyApp/blob/master/docs/ChattyApp.gif)
 
 ## Getting Started
 
@@ -17,7 +17,19 @@ This was created with React for front end work and uses WebSockets for the serve
 
 ### Dependencies
 
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* babel-core
+* babel-loader
+* babel-preset-es2015
+* babel-preset-react
+* css-loader
+* node-sass
+* sass-loader
+* sockjs-client
+* style-loader
+* webpack
+* webpack-dev-server
+* react
+* react-dom
+* express
+* ws
+* uuid
